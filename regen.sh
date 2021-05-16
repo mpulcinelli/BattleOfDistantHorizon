@@ -1,0 +1,1 @@
+/opt/UnrealEngine/GenerateProjectFiles.sh /home/mp/Develop/personal/games/BattleOfDistantHoriz/BattleOfDistantHoriz.uproject
