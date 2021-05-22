@@ -10,7 +10,7 @@ void AHomeGameMode::InitGame(const FString &MapName, const FString &Options, FSt
     auto EntradaWidget = NewObject<UUserWidgetHelper>(this);
 
     if (EntradaWidget)
-        EntradaWidget->ShowEntrada();
+        EntradaWidget->SetEntradaWidget(true);
 }
 
 void AHomeGameMode::StartToLeaveMap()
@@ -20,5 +20,5 @@ void AHomeGameMode::StartToLeaveMap()
     auto EntradaWidget = NewObject<UUserWidgetHelper>(this);
 
     if (EntradaWidget)
-        EntradaWidget->HideEntrada();
+        EntradaWidget->SetEntradaWidget(false);
 }

@@ -13,6 +13,10 @@ class ABattleOfDistantHorizGameMode : public AGameModeBase
 
 public:
 	ABattleOfDistantHorizGameMode();
+
+	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage);
+	virtual void StartToLeaveMap();
+
 };
 
 

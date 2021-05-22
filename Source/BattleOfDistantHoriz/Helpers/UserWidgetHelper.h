@@ -15,12 +15,28 @@ class BATTLEOFDISTANTHORIZ_API UUserWidgetHelper : public UObject
 	GENERATED_BODY()
 
 public:
+	
+	UFUNCTION()
+	void SetEntradaWidget(bool hide);
 
+	UFUNCTION()
+	void SetPlayerHudWidget(bool hide);
+
+private:
+
+	/**
+	 * Entrada Widget
+	*/
 	UFUNCTION()
 	void ShowEntrada();
 
 	UFUNCTION()
 	void HideEntrada();
 	
+	UFUNCTION()
+	void ShowPlayerHud();
+
+	UFUNCTION()
+	void HidePlayerHud();
 
 };
