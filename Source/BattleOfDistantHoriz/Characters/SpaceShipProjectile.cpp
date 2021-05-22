@@ -99,8 +99,6 @@ void ASpaceShipProjectile::BeginPlay()
 
 void ASpaceShipProjectile::SphereColliderBeginOverlap(class UPrimitiveComponent *OverlappedComp, class AActor *Other, class UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
 {
-
-	// Only add impulse and destroy projectile if we hit a physics
 	if ((Other != nullptr) && (Other != this) && (OtherComp != nullptr) && (!Other->GetName().Contains("SpaceShipPawn")))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s"), *Other->GetName());

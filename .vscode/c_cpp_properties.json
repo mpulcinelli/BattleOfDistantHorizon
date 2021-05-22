@@ -8,7 +8,8 @@
             "cppStandard": "gnu++14",
 			"includePath": [
 				"/opt/UnrealEngine/Engine/Source/**",
-				"/home/mp/Develop/personal/games/BattleOfDistantHoriz/Source/**"
+				"/home/mp/Develop/personal/games/BattleOfDistantHoriz/Source/**",
+                "/home/mp/Develop/personal/games/BattleOfDistantHoriz/Source/BattleOfDistantHoriz/**"
 			]
         },
         {

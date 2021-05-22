@@ -1,8 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "BattleOfDistantHorizGameMode.h"
-#include "BattleOfDistantHorizPawn.h"
-#include "SpaceShipPawn.h"
+#include "BattleOfDistantHoriz/Characters/BattleOfDistantHorizPawn.h"
+#include "BattleOfDistantHoriz/Characters/SpaceShipPawn.h"
 
 ABattleOfDistantHorizGameMode::ABattleOfDistantHorizGameMode()
 {

@@ -6,9 +6,9 @@
 #include "UObject/ConstructorHelpers.h"
 #include "Components/SceneComponent.h"
 #include "Components/BoxComponent.h"
-#include "SpaceShipPawn.h"
+#include "BattleOfDistantHoriz/Characters/SpaceShipPawn.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "StarPickUp.h"
+#include "BattleOfDistantHoriz/Pickups/StarPickUp.h"
 #include "Components/PointLightComponent.h"
 
 

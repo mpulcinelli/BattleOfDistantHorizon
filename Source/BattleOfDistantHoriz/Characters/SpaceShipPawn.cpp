@@ -12,7 +12,6 @@
 #include "Engine/StaticMesh.h"
 #include "SpaceShipProjectile.h"
 #include <cstdlib>
-#include "DummyActor.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values

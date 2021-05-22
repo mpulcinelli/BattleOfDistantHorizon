@@ -93,8 +93,7 @@
 		"file": "/home/mp/Develop/personal/games/BattleOfDistantHoriz/Source/BattleOfDistantHoriz/SpaceShipProjectile.cpp",
 		"command": "cl.exe @\"/home/mp/Develop/personal/games/BattleOfDistantHoriz/.vscode/compileCommands_BattleOfDistantHoriz/BattleOfDistantHoriz.149.rsp\"",
 		"directory": "/opt/UnrealEngine/Engine/Source"
-	}
-	,
+	},
 	{
 		"file": "/home/mp/Develop/personal/games/BattleOfDistantHoriz/Source/BattleOfDistantHoriz/DummyActor.h",
 		"command": "cl.exe @\"/home/mp/Develop/personal/games/BattleOfDistantHoriz/.vscode/compileCommands_BattleOfDistantHoriz/BattleOfDistantHoriz.149.rsp\"",
@@ -102,6 +101,46 @@
 	},
 	{
 		"file": "/home/mp/Develop/personal/games/BattleOfDistantHoriz/Source/BattleOfDistantHoriz/DummyActor.cpp",
+		"command": "cl.exe @\"/home/mp/Develop/personal/games/BattleOfDistantHoriz/.vscode/compileCommands_BattleOfDistantHoriz/BattleOfDistantHoriz.149.rsp\"",
+		"directory": "/opt/UnrealEngine/Engine/Source"
+	},
+	{
+		"file": "/home/mp/Develop/personal/games/BattleOfDistantHoriz/Source/BattleOfDistantHoriz/Widgets/HomeWidget.h",
+		"command": "cl.exe @\"/home/mp/Develop/personal/games/BattleOfDistantHoriz/.vscode/compileCommands_BattleOfDistantHoriz/BattleOfDistantHoriz.149.rsp\"",
+		"directory": "/opt/UnrealEngine/Engine/Source"
+	},
+	{
+		"file": "/home/mp/Develop/personal/games/BattleOfDistantHoriz/Source/BattleOfDistantHoriz/Widgets/HomeWidget.cpp",
+		"command": "cl.exe @\"/home/mp/Develop/personal/games/BattleOfDistantHoriz/.vscode/compileCommands_BattleOfDistantHoriz/BattleOfDistantHoriz.149.rsp\"",
+		"directory": "/opt/UnrealEngine/Engine/Source"
+	},
+	{
+		"file": "/home/mp/Develop/personal/games/BattleOfDistantHoriz/Source/BattleOfDistantHoriz/BattleOfDistantHorizGameInstance.h",
+		"command": "cl.exe @\"/home/mp/Develop/personal/games/BattleOfDistantHoriz/.vscode/compileCommands_BattleOfDistantHoriz/BattleOfDistantHoriz.149.rsp\"",
+		"directory": "/opt/UnrealEngine/Engine/Source"
+	},
+	{
+		"file": "/home/mp/Develop/personal/games/BattleOfDistantHoriz/Source/BattleOfDistantHoriz/BattleOfDistantHorizGameInstance.cpp",
+		"command": "cl.exe @\"/home/mp/Develop/personal/games/BattleOfDistantHoriz/.vscode/compileCommands_BattleOfDistantHoriz/BattleOfDistantHoriz.149.rsp\"",
+		"directory": "/opt/UnrealEngine/Engine/Source"
+	},
+	{
+		"file": "/home/mp/Develop/personal/games/BattleOfDistantHoriz/Source/BattleOfDistantHoriz/Helpers/UserWidgetHelper.h",
+		"command": "cl.exe @\"/home/mp/Develop/personal/games/BattleOfDistantHoriz/.vscode/compileCommands_BattleOfDistantHoriz/BattleOfDistantHoriz.149.rsp\"",
+		"directory": "/opt/UnrealEngine/Engine/Source"
+	},
+	{
+		"file": "/home/mp/Develop/personal/games/BattleOfDistantHoriz/Source/BattleOfDistantHoriz/Helpers/UserWidgetHelper.cpp",
+		"command": "cl.exe @\"/home/mp/Develop/personal/games/BattleOfDistantHoriz/.vscode/compileCommands_BattleOfDistantHoriz/BattleOfDistantHoriz.149.rsp\"",
+		"directory": "/opt/UnrealEngine/Engine/Source"
+	},
+	{
+		"file": "/home/mp/Develop/personal/games/BattleOfDistantHoriz/Source/BattleOfDistantHoriz/GameModes/HomeGameMode.h",
+		"command": "cl.exe @\"/home/mp/Develop/personal/games/BattleOfDistantHoriz/.vscode/compileCommands_BattleOfDistantHoriz/BattleOfDistantHoriz.149.rsp\"",
+		"directory": "/opt/UnrealEngine/Engine/Source"
+	},
+	{
+		"file": "/home/mp/Develop/personal/games/BattleOfDistantHoriz/Source/BattleOfDistantHoriz/GameModes/HomeGameMode.cpp",
 		"command": "cl.exe @\"/home/mp/Develop/personal/games/BattleOfDistantHoriz/.vscode/compileCommands_BattleOfDistantHoriz/BattleOfDistantHoriz.149.rsp\"",
 		"directory": "/opt/UnrealEngine/Engine/Source"
 	}
