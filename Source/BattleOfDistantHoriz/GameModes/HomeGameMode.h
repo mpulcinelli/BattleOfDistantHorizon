@@ -17,5 +17,6 @@ class BATTLEOFDISTANTHORIZ_API AHomeGameMode : public AGameModeBase
 protected:
 	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage);
 	virtual void StartToLeaveMap();
+	virtual void StartPlay();
 	
 };

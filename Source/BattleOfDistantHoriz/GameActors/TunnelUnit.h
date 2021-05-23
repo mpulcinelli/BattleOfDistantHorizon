@@ -40,6 +40,10 @@ public:
 	UPROPERTY(Category = Mesh, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UPointLightComponent *PoitLight05;
 
+	UPROPERTY(Category = Mesh, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	class UArrowComponent *ArrowPositionNextBlock;
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -52,6 +56,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	FORCEINLINE class UArrowComponent* GetArrowPositionNextBlock() const { return ArrowPositionNextBlock; }
 
 private:
 	UFUNCTION()

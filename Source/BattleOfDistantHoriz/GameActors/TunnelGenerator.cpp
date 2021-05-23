@@ -2,7 +2,7 @@
 
 #include "TunnelGenerator.h"
 #include "TunnelUnit.h"
-
+#include "Components/ArrowComponent.h"
 
 // Sets default values
 ATunnelGenerator::ATunnelGenerator()
@@ -30,14 +30,17 @@ void ATunnelGenerator::CreateUnit()
 	FActorSpawnParameters SpawnInfo;
 	SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-	if (LocationToSpawn.X == 0.0)
+	if (!LastTunnelCreated)
 	{
-		GetWorld()->SpawnActor<ATunnelUnit>(LocationToSpawn, RotationToSpawn, SpawnInfo);
-		LocationToSpawn.X = 4800.0;
+		LastTunnelCreated = GetWorld()->SpawnActor<ATunnelUnit>(LocationToSpawn, RotationToSpawn, SpawnInfo);
+		UE_LOG(LogTemp, Warning, TEXT("[PRIMEIRA VEZ] POSICAO PARA O PROXIMO BLOCO %f"), LocationToSpawn.X);
+
 	}
 	else
 	{
-		GetWorld()->SpawnActor<ATunnelUnit>(LocationToSpawn, RotationToSpawn, SpawnInfo);
-		LocationToSpawn.X += 4800.0;
+		auto ArrowPosition = LastTunnelCreated->GetArrowPositionNextBlock();
+		LocationToSpawn.X += ArrowPosition->GetComponentLocation().X;
+		UE_LOG(LogTemp, Warning, TEXT("POSICAO PARA O PROXIMO BLOCO %f"), LocationToSpawn.X);
+		LastTunnelCreated = GetWorld()->SpawnActor<ATunnelUnit>(LocationToSpawn, RotationToSpawn, SpawnInfo);
 	}
 }

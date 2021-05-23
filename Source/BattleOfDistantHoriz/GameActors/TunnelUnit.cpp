@@ -10,7 +10,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "BattleOfDistantHoriz/Pickups/StarPickUp.h"
 #include "Components/PointLightComponent.h"
-
+#include "Components/ArrowComponent.h"
 
 // Sets default values
 ATunnelUnit::ATunnelUnit()
@@ -27,6 +27,8 @@ ATunnelUnit::ATunnelUnit()
 	PoitLight03 = CreateDefaultSubobject<UPointLightComponent>(TEXT("PoitLight03"));
 	PoitLight04 = CreateDefaultSubobject<UPointLightComponent>(TEXT("PoitLight04"));
 	PoitLight05 = CreateDefaultSubobject<UPointLightComponent>(TEXT("PoitLight05"));	
+	ArrowPositionNextBlock = CreateDefaultSubobject<UArrowComponent>(TEXT("ArrowPositionNextBlock"));	
+	
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> SM_TUNNEL_UNIT_OPEN(TEXT("/Game/Geometry/Meshes/SM_Tunnel_Open_4800"));
 
@@ -95,6 +97,11 @@ ATunnelUnit::ATunnelUnit()
 	AreaToSpawn->SetRelativeScale3D(FVector(70.0f, 70.0f, 70.0f));
 	AreaToSpawn->SetGenerateOverlapEvents(true);
 	AreaToSpawn->SetCollisionProfileName(FName("BoxSpawnProfile"));
+
+	
+	ArrowPositionNextBlock->SetRelativeLocation(FVector(2400.000000,0.000000,-2400.000000));
+	ArrowPositionNextBlock->SetRelativeScale3D(FVector(1.0f, 1.0f, 1.0f));
+
 
 	if (SM_TUNNEL_UNIT_OPEN.Object != nullptr)
 	{

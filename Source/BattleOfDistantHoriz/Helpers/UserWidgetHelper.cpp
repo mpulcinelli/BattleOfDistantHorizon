@@ -8,6 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "BattleOfDistantHoriz/Widgets/HomeWidget.h"
 #include "BattleOfDistantHoriz/Widgets/HUDWidget.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 
 void UUserWidgetHelper::ShowEntrada()
 {
@@ -23,6 +24,8 @@ void UUserWidgetHelper::ShowEntrada()
             if (EntradaWidget)
             {
                 EntradaWidget->AddToViewport();
+                UWidgetBlueprintLibrary::SetInputMode_UIOnly(PC, EntradaWidget, false);
+                PC->bShowMouseCursor = true;
             }
         }
     }
@@ -85,5 +88,4 @@ void UUserWidgetHelper::SetPlayerHudWidget(bool hide)
         ShowPlayerHud();
     else
         HidePlayerHud();
-
 }

@@ -30,5 +30,6 @@ private:
 	FTimerHandle CreateUnitTimerHandle;
 	FVector LocationToSpawn;
 	FRotator RotationToSpawn;
+	class ATunnelUnit* LastTunnelCreated = nullptr;
 	
 };
