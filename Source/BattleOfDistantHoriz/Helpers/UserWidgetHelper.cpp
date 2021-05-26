@@ -12,22 +12,32 @@
 
 void UUserWidgetHelper::ShowEntrada()
 {
-    FStringClassReference WBP_ENTRADA(TEXT("WidgetBlueprint'/Game/UI/WBP_ENTRADA.WBP_ENTRADA'"));
+    FSoftClassPath WBP_ENTRADA(TEXT("WidgetBlueprint'/Game/UI/WBP_ENTRADA.WBP_ENTRADA_C'"));
 
-    if (UClass *WbpEntradaClass = WBP_ENTRADA.TryLoadClass<UUserWidget>())
+    if (UClass *WbpEntradaClass = WBP_ENTRADA.TryLoadClass<UHomeWidget>())
     {
-        auto PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 
-        if (PC)
-        {
-            UUserWidget *EntradaWidget = CreateWidget<UUserWidget>(PC, WbpEntradaClass);
-            if (EntradaWidget)
-            {
-                EntradaWidget->AddToViewport();
-                UWidgetBlueprintLibrary::SetInputMode_UIOnly(PC, EntradaWidget, false);
-                PC->bShowMouseCursor = true;
-            }
-        }
+        UWorld *W = GetWorld();
+
+        if (!ensure(W != nullptr))
+            return;
+
+        APlayerController *PC = W->GetFirstPlayerController();
+
+        if (!ensure(PC != nullptr))
+            return;
+
+        UUserWidget *EntradaWidget = CreateWidget<UUserWidget>(PC, WbpEntradaClass);
+
+        if (!ensure(EntradaWidget != nullptr))
+            return;
+
+        EntradaWidget->AddToViewport();
+        FInputModeUIOnly InputUI;
+        InputUI.SetWidgetToFocus(EntradaWidget->TakeWidget());
+        InputUI.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+        PC->SetInputMode(InputUI);
+        PC->bShowMouseCursor = true;
     }
 }
 
@@ -74,18 +84,25 @@ void UUserWidgetHelper::HidePlayerHud()
     }
 }
 
-void UUserWidgetHelper::SetEntradaWidget(bool hide)
+void UUserWidgetHelper::SetEntradaWidget(EDisplayWidget DisplayOption)
 {
-    if (hide)
+    if (DisplayOption == EDisplayWidget::HideWidget)
+
+    {
         HideEntrada();
+        UE_LOG(LogTemp, Warning, TEXT("Entrei no hide"));
+    }
     else
+    {
         ShowEntrada();
+        UE_LOG(LogTemp, Warning, TEXT("Entrei no Show"));
+    }
 }
 
-void UUserWidgetHelper::SetPlayerHudWidget(bool hide)
+void UUserWidgetHelper::SetPlayerHudWidget(EDisplayWidget DisplayOption)
 {
-    if (hide)
-        ShowPlayerHud();
-    else
+    if (DisplayOption == EDisplayWidget::HideWidget)
         HidePlayerHud();
+    else
+        ShowPlayerHud();
 }

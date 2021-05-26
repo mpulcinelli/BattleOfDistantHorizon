@@ -6,6 +6,15 @@
 #include "UObject/NoExportTypes.h"
 #include "UserWidgetHelper.generated.h"
 
+
+UENUM(BlueprintType)
+enum class EDisplayWidget : uint8
+{
+	ShowWidget UMETA(DisplayName="ShowWidget"),
+	HideWidget  UMETA(DisplayName="HideWidget")
+};
+
+
 /**
  * 
  */
@@ -17,10 +26,10 @@ class BATTLEOFDISTANTHORIZ_API UUserWidgetHelper : public UObject
 public:
 	
 	UFUNCTION()
-	void SetEntradaWidget(bool hide);
+	void SetEntradaWidget(EDisplayWidget DisplayOption);
 
 	UFUNCTION()
-	void SetPlayerHudWidget(bool hide);
+	void SetPlayerHudWidget(EDisplayWidget DisplayOption);
 
 private:
 

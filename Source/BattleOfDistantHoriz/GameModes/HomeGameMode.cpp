@@ -17,16 +17,19 @@ void AHomeGameMode::StartToLeaveMap()
     auto EntradaWidget = NewObject<UUserWidgetHelper>(this);
 
     if (EntradaWidget)
-        EntradaWidget->SetEntradaWidget(false);
+        EntradaWidget->SetEntradaWidget(EDisplayWidget::HideWidget);
 }
 
-void AHomeGameMode::StartPlay() 
+void AHomeGameMode::StartPlay()
 {
+    Super::StartPlay();
+
     auto EntradaWidget = NewObject<UUserWidgetHelper>(this);
 
     if (EntradaWidget)
-            EntradaWidget->SetEntradaWidget(true);
-
-    Super::StartPlay();
-
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Entrei no Entrada Widget"));
+        EntradaWidget->SetEntradaWidget(EDisplayWidget::ShowWidget);
+    }
+    UE_LOG(LogTemp, Warning, TEXT("Chegue no final de startplay"));
 }

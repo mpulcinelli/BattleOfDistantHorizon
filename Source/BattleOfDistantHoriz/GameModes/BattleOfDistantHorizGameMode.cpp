@@ -18,7 +18,7 @@ void ABattleOfDistantHorizGameMode::InitGame(const FString &MapName, const FStri
 	auto HelperWidget = NewObject<UUserWidgetHelper>(this);
 
 	if (HelperWidget){
-		HelperWidget->SetPlayerHudWidget(true);
+		HelperWidget->SetPlayerHudWidget(EDisplayWidget::ShowWidget);
 	}
 	 	
 }
@@ -29,7 +29,7 @@ void ABattleOfDistantHorizGameMode::StartToLeaveMap()
 	auto HelperWidget = NewObject<UUserWidgetHelper>(this);
 
 	if (HelperWidget){
-		HelperWidget->SetPlayerHudWidget(false);
+		HelperWidget->SetPlayerHudWidget(EDisplayWidget::HideWidget);
 	}
 
 }
