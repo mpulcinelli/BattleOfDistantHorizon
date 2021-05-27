@@ -33,7 +33,6 @@ ASpaceShipProjectile::ASpaceShipProjectile()
 	ProjectileParticle->SetupAttachment(SphereCollider);
 
 	SphereCollider->OnComponentBeginOverlap.AddDynamic(this, &ASpaceShipProjectile::SphereColliderBeginOverlap);
-	SphereCollider->SetupAttachment(RootComponent);
 	SphereCollider->SetHiddenInGame(true);
 
 	SphereCollider->SetGenerateOverlapEvents(true);

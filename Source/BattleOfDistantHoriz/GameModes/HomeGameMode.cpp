@@ -25,11 +25,9 @@ void AHomeGameMode::StartPlay()
     Super::StartPlay();
 
     auto EntradaWidget = NewObject<UUserWidgetHelper>(this);
-
+    
     if (EntradaWidget)
     {
-        UE_LOG(LogTemp, Warning, TEXT("Entrei no Entrada Widget"));
         EntradaWidget->SetEntradaWidget(EDisplayWidget::ShowWidget);
     }
-    UE_LOG(LogTemp, Warning, TEXT("Chegue no final de startplay"));
 }

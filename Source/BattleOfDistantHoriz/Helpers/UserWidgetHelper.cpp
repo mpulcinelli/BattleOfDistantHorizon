@@ -14,31 +14,26 @@ void UUserWidgetHelper::ShowEntrada()
 {
     FSoftClassPath WBP_ENTRADA(TEXT("WidgetBlueprint'/Game/UI/WBP_ENTRADA.WBP_ENTRADA_C'"));
 
-    if (UClass *WbpEntradaClass = WBP_ENTRADA.TryLoadClass<UHomeWidget>())
-    {
+    UClass *WbpEntradaClass = WBP_ENTRADA.TryLoadClass<UHomeWidget>();
+    if (!ensureAlwaysMsgf(WbpEntradaClass, TEXT("Problema com TryLoadClass<UHomeWidget>() em %s"), *FString(__func__)))
+        return;
 
-        UWorld *W = GetWorld();
+    UWorld *W = GetWorld();
+    if (!ensureAlwaysMsgf(W, TEXT("Problema com GetWorld() em %s"), *FString(__func__)))
+        return;
 
-        if (!ensure(W != nullptr))
-            return;
+    APlayerController *PC = W->GetFirstPlayerController();
+    if (!ensureAlwaysMsgf(PC, TEXT("Problema com GetFirstPlayerController() em %s"), *FString(__func__)))
+        return;
 
-        APlayerController *PC = W->GetFirstPlayerController();
+    UUserWidget *EntradaWidget = CreateWidget<UUserWidget>(PC, WbpEntradaClass);
+    if (!ensureAlwaysMsgf(EntradaWidget, TEXT("Problema com CreateWidget() em %s"), *FString(__func__)))
+        return;
 
-        if (!ensure(PC != nullptr))
-            return;
+    EntradaWidget->AddToViewport();
+    PC->bShowMouseCursor = true;
 
-        UUserWidget *EntradaWidget = CreateWidget<UUserWidget>(PC, WbpEntradaClass);
-
-        if (!ensure(EntradaWidget != nullptr))
-            return;
-
-        EntradaWidget->AddToViewport();
-        FInputModeUIOnly InputUI;
-        InputUI.SetWidgetToFocus(EntradaWidget->TakeWidget());
-        InputUI.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-        PC->SetInputMode(InputUI);
-        PC->bShowMouseCursor = true;
-    }
+    UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(PC, EntradaWidget, EMouseLockMode::DoNotLock);
 }
 
 void UUserWidgetHelper::HideEntrada()
@@ -55,21 +50,28 @@ void UUserWidgetHelper::HideEntrada()
 
 void UUserWidgetHelper::ShowPlayerHud()
 {
-    FStringClassReference WBP_HUD(TEXT("WidgetBlueprint'/Game/UI/WBP_HUD.WBP_HUD'"));
+    FSoftClassPath WBP_HUD(TEXT("WidgetBlueprint'/Game/UI/WBP_HUD.WBP_HUD_C'"));
 
-    if (UClass *WbpHudClass = WBP_HUD.TryLoadClass<UUserWidget>())
-    {
-        auto PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+    UClass *WbpHudClass = WBP_HUD.TryLoadClass<UUserWidget>();
+    if (!ensureAlwaysMsgf(WbpHudClass, TEXT("Problema com TryLoadClass<UHomeWidget>() em %s"), *FString(__func__)))
+        return;
 
-        if (PC)
-        {
-            UUserWidget *HudWidget = CreateWidget<UUserWidget>(PC, WbpHudClass);
-            if (HudWidget)
-            {
-                HudWidget->AddToViewport();
-            }
-        }
-    }
+    UWorld *W = GetWorld();
+    if (!ensureAlwaysMsgf(W, TEXT("Problema com GetWorld() em %s"), *FString(__func__)))
+        return;
+
+    APlayerController *PC = W->GetFirstPlayerController();
+    if (!ensureAlwaysMsgf(PC, TEXT("Problema com GetFirstPlayerController() em %s"), *FString(__func__)))
+        return;
+
+    UUserWidget *HudWidget = CreateWidget<UUserWidget>(PC, WbpHudClass);
+    if (!ensureAlwaysMsgf(HudWidget, TEXT("Problema com CreateWidget() em %s"), *FString(__func__)))
+        return;
+
+    HudWidget->AddToViewport();
+    PC->bShowMouseCursor = false;
+
+    UWidgetBlueprintLibrary::SetInputMode_GameOnly(PC);
 }
 
 void UUserWidgetHelper::HidePlayerHud()
@@ -79,24 +81,15 @@ void UUserWidgetHelper::HidePlayerHud()
     UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(), FoundWidgets, UHUDWidget::StaticClass());
 
     for (auto &&item : FoundWidgets)
-    {
         item->RemoveFromViewport();
-    }
 }
 
 void UUserWidgetHelper::SetEntradaWidget(EDisplayWidget DisplayOption)
 {
     if (DisplayOption == EDisplayWidget::HideWidget)
-
-    {
         HideEntrada();
-        UE_LOG(LogTemp, Warning, TEXT("Entrei no hide"));
-    }
     else
-    {
         ShowEntrada();
-        UE_LOG(LogTemp, Warning, TEXT("Entrei no Show"));
-    }
 }
 
 void UUserWidgetHelper::SetPlayerHudWidget(EDisplayWidget DisplayOption)

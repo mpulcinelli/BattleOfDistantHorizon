@@ -26,9 +26,8 @@ ATunnelUnit::ATunnelUnit()
 	PoitLight02 = CreateDefaultSubobject<UPointLightComponent>(TEXT("PoitLight02"));
 	PoitLight03 = CreateDefaultSubobject<UPointLightComponent>(TEXT("PoitLight03"));
 	PoitLight04 = CreateDefaultSubobject<UPointLightComponent>(TEXT("PoitLight04"));
-	PoitLight05 = CreateDefaultSubobject<UPointLightComponent>(TEXT("PoitLight05"));	
-	ArrowPositionNextBlock = CreateDefaultSubobject<UArrowComponent>(TEXT("ArrowPositionNextBlock"));	
-	
+	PoitLight05 = CreateDefaultSubobject<UPointLightComponent>(TEXT("PoitLight05"));
+	ArrowPositionNextBlock = CreateDefaultSubobject<UArrowComponent>(TEXT("ArrowPositionNextBlock"));
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> SM_TUNNEL_UNIT_OPEN(TEXT("/Game/Geometry/Meshes/SM_Tunnel_Open_4800"));
 
@@ -46,17 +45,23 @@ ATunnelUnit::ATunnelUnit()
 	PoitLight04->SetupAttachment(RootComp);
 	PoitLight05->SetupAttachment(RootComp);
 
-	PoitLight01->SetRelativeLocation(FVector(-1230.000000,2270.0,0.000000));
-	PoitLight02->SetRelativeLocation(FVector(1230.000000,2270.0,0.000000));
-	PoitLight03->SetRelativeLocation(FVector(1230.000000,-2270.0,0.000000));
-	PoitLight04->SetRelativeLocation(FVector(-1230.000000,-2270.0,0.000000));
-	PoitLight05->SetRelativeLocation(FVector(0.000000,10.000000,2170.000000));
+	PoitLight01->SetRelativeLocation(FVector(-1230.000000, 2270.0, 0.000000));
+	PoitLight02->SetRelativeLocation(FVector(1230.000000, 2270.0, 0.000000));
+	PoitLight03->SetRelativeLocation(FVector(1230.000000, -2270.0, 0.000000));
+	PoitLight04->SetRelativeLocation(FVector(-1230.000000, -2270.0, 0.000000));
+	PoitLight05->SetRelativeLocation(FVector(0.000000, 10.000000, 2170.000000));
 
 	PoitLight01->SetIntensity(100000.0);
 	PoitLight02->SetIntensity(100000.0);
 	PoitLight03->SetIntensity(100000.0);
 	PoitLight04->SetIntensity(100000.0);
-	PoitLight05->SetIntensity(100000.0);	
+	PoitLight05->SetIntensity(100000.0);
+
+	PoitLight01->SetVisibility(false);
+	PoitLight02->SetVisibility(false);
+	PoitLight03->SetVisibility(false);
+	PoitLight04->SetVisibility(false);
+	PoitLight05->SetVisibility(false);
 
 	PoitLight01->SetAttenuationRadius(16000.0);
 	PoitLight02->SetAttenuationRadius(16000.0);
@@ -98,10 +103,8 @@ ATunnelUnit::ATunnelUnit()
 	AreaToSpawn->SetGenerateOverlapEvents(true);
 	AreaToSpawn->SetCollisionProfileName(FName("BoxSpawnProfile"));
 
-	
-	ArrowPositionNextBlock->SetRelativeLocation(FVector(2400.000000,0.000000,-2400.000000));
+	ArrowPositionNextBlock->SetRelativeLocation(FVector(2400.000000, 0.000000, -2400.000000));
 	ArrowPositionNextBlock->SetRelativeScale3D(FVector(1.0f, 1.0f, 1.0f));
-
 
 	if (SM_TUNNEL_UNIT_OPEN.Object != nullptr)
 	{
@@ -112,6 +115,7 @@ ATunnelUnit::ATunnelUnit()
 void ATunnelUnit::BeginPlay()
 {
 	Super::BeginPlay();
+	ShuffleLight();
 
 	EndTrigger->OnComponentBeginOverlap.AddDynamic(this, &ATunnelUnit::EndTriggerBeginOverlap);
 	FVector RandPoint;
@@ -120,7 +124,7 @@ void ATunnelUnit::BeginPlay()
 
 	FActorSpawnParameters SpawnInfo;
 	SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	
+
 	FRotator RotationToSpawn;
 
 	auto start = GetWorld()->SpawnActor<AStarPickUp>(RandPoint, RotationToSpawn, SpawnInfo);
@@ -158,6 +162,32 @@ void ATunnelUnit::EndTriggerBeginOverlap(class UPrimitiveComponent *OverlappedCo
 			// Destroi os objetos criados pelo Túnel.
 			itm->SetLifeSpan(0.5);
 		}
+	}
+}
+
+void ATunnelUnit::ShuffleLight()
+{
+	int32 opt = FMath::RandRange(1, 5);
+	switch (opt)
+	{
+	case 1:
+		PoitLight01->SetVisibility(FMath::RandBool());
+		break;
+	case 2:
+		PoitLight02->SetVisibility(FMath::RandBool());
+		break;
+	case 3:
+		PoitLight03->SetVisibility(FMath::RandBool());
+		break;
+	case 4:
+		PoitLight04->SetVisibility(FMath::RandBool());
+		break;
+	case 5:
+		PoitLight05->SetVisibility(FMath::RandBool());
+		break;
+
+	default:
+		break;
 	}
 }
 

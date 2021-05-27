@@ -62,5 +62,5 @@ private:
 	UFUNCTION()
 	void EndTriggerBeginOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* Other, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	TArray<AActor*> ListOfCreatedActors;
-
+	void ShuffleLight();
 };

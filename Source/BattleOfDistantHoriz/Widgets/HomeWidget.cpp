@@ -25,6 +25,8 @@ void UHomeWidget::NativeConstruct()
     {
         BtnSair->OnClicked.AddDynamic(this, &UHomeWidget::OnBtnSair);
     }
+    
+    this->bIsFocusable = true;
 }
 
 void UHomeWidget::OnBtnJogar()

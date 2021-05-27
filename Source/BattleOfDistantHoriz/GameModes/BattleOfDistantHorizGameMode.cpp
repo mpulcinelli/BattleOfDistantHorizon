@@ -15,12 +15,17 @@ ABattleOfDistantHorizGameMode::ABattleOfDistantHorizGameMode()
 void ABattleOfDistantHorizGameMode::InitGame(const FString &MapName, const FString &Options, FString &ErrorMessage)
 {
 	Super::InitGame(MapName, Options, ErrorMessage);
+	 	
+}
+
+void ABattleOfDistantHorizGameMode::StartPlay() 
+{
+	Super::StartPlay();
 	auto HelperWidget = NewObject<UUserWidgetHelper>(this);
 
 	if (HelperWidget){
 		HelperWidget->SetPlayerHudWidget(EDisplayWidget::ShowWidget);
 	}
-	 	
 }
 
 void ABattleOfDistantHorizGameMode::StartToLeaveMap()
