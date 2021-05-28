@@ -11,6 +11,20 @@ class BATTLEOFDISTANTHORIZ_API ASpaceShipPawn : public APawn
 {
 	GENERATED_BODY()
 
+public:
+
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPlayerDecrementLife, float, ponto);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPlayerDiedNow);
+
+
+	UPROPERTY(BlueprintAssignable)
+	FPlayerDecrementLife OnPlayerDecrementLife;
+
+	UPROPERTY(BlueprintAssignable)
+	FPlayerDiedNow OnPlayerDiedNow;
+
+	bool bIsDead=false;
+
 	/** StaticMesh component that will be the visuals for our flying pawn */
 	UPROPERTY(Category = Mesh, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UStaticMeshComponent* SpaceShip_Mesh;
@@ -78,6 +92,7 @@ public:
 	// Begin AActor overrides
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void NotifyHit(class UPrimitiveComponent* MyComp, class AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
+	virtual void BeginPlay() override;
 	// End AActor overrides
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	class UArrowComponent* ArrowGuid_1;
@@ -97,6 +112,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	class UArrowComponent* ArrowGuid_6;
 
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	class UArrowComponent* ArrowCrossHairHandle;
 
 protected:
 
@@ -135,13 +152,25 @@ protected:
 	UFUNCTION()
 	void Fire06();
 
+	UFUNCTION()
+	void ExplodeShip();
+	
+	UFUNCTION()
+	void HideShipMesh();
 
 
 private:
 
+
+
 	/** How quickly forward speed changes */
 	UPROPERTY(Category=Plane, EditAnywhere)
 	float Acceleration;
+
+	/** How quickly forward speed changes */
+	UPROPERTY(Category=Plane, EditAnywhere)
+	float AmountLife;
+
 
 	/** How quickly pawn can steer */
 	UPROPERTY(Category=Plane, EditAnywhere)
@@ -174,6 +203,7 @@ private:
 	bool IsShieldVisible = false;
 
 	class UParticleSystem* CollisionExplodeParticle;
+
 
 public:	
 	

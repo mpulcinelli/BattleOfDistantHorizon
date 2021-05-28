@@ -25,7 +25,6 @@ ABattleOfDistantHorizPawn::ABattleOfDistantHorizPawn()
 	// Create static mesh component
 	PlaneMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PlaneMesh0"));
 	PlaneMesh->SetStaticMesh(ConstructorStatics.PlaneMesh.Get());	// Set static mesh
-//	PlaneMesh->SetupAttachment(RootComp);
 	PlaneMesh->SetNotifyRigidBodyCollision(true);
 	RootComponent = PlaneMesh;
 

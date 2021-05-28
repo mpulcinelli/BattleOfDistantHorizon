@@ -3,6 +3,7 @@
 #include "UObject/ConstructorHelpers.h"
 #include "Camera/CameraComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "BattleOfDistantHoriz/GameInstances/BattleOfDistantHorizGameInstance.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Particles/ParticleSystem.h"
@@ -13,14 +14,15 @@
 #include "SpaceShipProjectile.h"
 #include <cstdlib>
 #include "Kismet/GameplayStatics.h"
+#include "BattleOfDistantHoriz/Helpers/UserWidgetHelper.h"
+#include "BattleOfDistantHoriz/GameActors/TunnelUnit.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 ASpaceShipPawn::ASpaceShipPawn()
 {
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	// USceneComponent *RootComp = CreateDefaultSubobject<USceneComponent>(TEXT("RootComp"));
-	// RootComponent = RootComp;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> SM_SPACESHIP_MESH(TEXT("/Game/SciFi_Ship/Static_Meshes/Spaceship_alter"));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> SM_LANDING_GEAR_BACK_MESH(TEXT("/Game/SciFi_Ship/Static_Meshes/Landing_Gear_Back"));
@@ -48,18 +50,16 @@ ASpaceShipPawn::ASpaceShipPawn()
 	// Create static mesh component
 	SpaceShip_Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SpaceShip_Mesh"));
 	SpaceShip_Mesh->SetStaticMesh(SM_SPACESHIP_MESH.Object);
-	// SpaceShip_Mesh->SetRelativeLocation(FVector(0.0, 0.0, 0.0));
-	// SpaceShip_Mesh->SetRelativeRotation(FRotator(0.0, 90.0, 0.0));
 	SpaceShip_Mesh->SetCollisionProfileName(FName("Pawn"));
 	SpaceShip_Mesh->SetNotifyRigidBodyCollision(true);
 
-	RootComponent = SpaceShip_Mesh;	
+	RootComponent = SpaceShip_Mesh;
 
 	Hardpoint1_Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Hardpoint1_Mesh"));
 	Hardpoint1_Mesh->SetStaticMesh(SM_HARDPOINT1_MESH.Object);
 	Hardpoint1_Mesh->SetupAttachment(SpaceShip_Mesh);
-	Hardpoint1_Mesh->SetRelativeLocation(FVector(39.158077,-94.999969,-49.336540));
-	Hardpoint1_Mesh->SetRelativeRotation(FRotator(0.000000,90.000000,-0.000183));
+	Hardpoint1_Mesh->SetRelativeLocation(FVector(39.158077, -94.999969, -49.336540));
+	Hardpoint1_Mesh->SetRelativeRotation(FRotator(0.000000, 90.000000, -0.000183));
 	Hardpoint1_Mesh->SetRelativeScale3D(FVector(1.000000, 1.000000, 1.000000));
 
 	ArrowGuid_2 = CreateDefaultSubobject<UArrowComponent>(TEXT("ArrowGuid_2"));
@@ -67,12 +67,21 @@ ASpaceShipPawn::ASpaceShipPawn()
 	ArrowGuid_2->SetRelativeLocation(FVector(-38.000031, -136.000000, -9.000000));
 	ArrowGuid_2->SetRelativeRotation(FRotator(0.000000, -90.000000, 0.000000));
 	ArrowGuid_2->SetRelativeScale3D(FVector(1.000000, 1.000000, 1.000000));
+	ArrowGuid_2->SetCollisionProfileName(FName("ArrowProfile"));
+
+	ArrowCrossHairHandle = CreateDefaultSubobject<UArrowComponent>(TEXT("ArrowCrossHairHandle"));
+	ArrowCrossHairHandle->SetupAttachment(SpaceShip_Mesh);
+	ArrowCrossHairHandle->SetRelativeLocation(FVector(3000.000000, 0.000000, 0.000000));
+	ArrowCrossHairHandle->SetRelativeRotation(FRotator(0.000000, 0.000000, 0.000000));
+	ArrowCrossHairHandle->SetRelativeScale3D(FVector(1.000000, 1.000000, 1.000000));
+	ArrowCrossHairHandle->SetSimulatePhysics(false);
+	ArrowCrossHairHandle->SetCollisionProfileName(FName("ArrowProfile"));
 
 	Hardpoint2_Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Hardpoint2_Mesh"));
 	Hardpoint2_Mesh->SetStaticMesh(SM_HARDPOINT2_MESH.Object);
 	Hardpoint2_Mesh->SetupAttachment(SpaceShip_Mesh);
-	Hardpoint2_Mesh->SetRelativeLocation(FVector(39.158077,95.000031,-49.336540));
-	Hardpoint2_Mesh->SetRelativeRotation(FRotator(0.000000,90.000000,0.000000));
+	Hardpoint2_Mesh->SetRelativeLocation(FVector(39.158077, 95.000031, -49.336540));
+	Hardpoint2_Mesh->SetRelativeRotation(FRotator(0.000000, 90.000000, 0.000000));
 	Hardpoint2_Mesh->SetRelativeScale3D(FVector(-1.000000, 1.000000, 1.000000));
 
 	ArrowGuid_1 = CreateDefaultSubobject<UArrowComponent>(TEXT("ArrowGuid_1"));
@@ -80,11 +89,12 @@ ASpaceShipPawn::ASpaceShipPawn()
 	ArrowGuid_1->SetRelativeLocation(FVector(-38.000000, -136.00000, -9.000000));
 	ArrowGuid_1->SetRelativeRotation(FRotator(0.000000, 90.000000, 0.000000));
 	ArrowGuid_1->SetRelativeScale3D(FVector(-1.000000, 1.000000, 1.000000));
+	ArrowGuid_1->SetCollisionProfileName(FName("ArrowProfile"));
 
 	Hardpoint3a_Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Hardpoint3a_Mesh"));
 	Hardpoint3a_Mesh->SetStaticMesh(SM_HARDPOINT3A_MESH.Object);
 	Hardpoint3a_Mesh->SetupAttachment(SpaceShip_Mesh);
-	Hardpoint3a_Mesh->SetRelativeLocation(FVector(250.000000,-116.000000,-107.000000));
+	Hardpoint3a_Mesh->SetRelativeLocation(FVector(250.000000, -116.000000, -107.000000));
 	Hardpoint3a_Mesh->SetRelativeRotation(FRotator(0.000000, 90.000000, 0.00));
 
 	Hardpoint3b_Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Hardpoint3b_Mesh"));
@@ -98,12 +108,13 @@ ASpaceShipPawn::ASpaceShipPawn()
 	ArrowGuid_3->SetRelativeLocation(FVector(0.000012, -57.999935, 2.000031));
 	ArrowGuid_3->SetRelativeRotation(FRotator(0.000000, -90.000015, 0.000000));
 	ArrowGuid_3->SetRelativeScale3D(FVector(1.000000, 1.000000, 1.000000));
+	ArrowGuid_3->SetCollisionProfileName(FName("ArrowProfile"));
 
 	Hardpoint4a_Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Hardpoint4a_Mesh"));
 	Hardpoint4a_Mesh->SetStaticMesh(SM_HARDPOINT4A_MESH.Object);
 	Hardpoint4a_Mesh->SetupAttachment(SpaceShip_Mesh);
-	Hardpoint4a_Mesh->SetRelativeLocation(FVector(250.000000,116.000000,-107.000000));
-	Hardpoint4a_Mesh->SetRelativeRotation(FRotator(0.000000,90.000000,0.000000));
+	Hardpoint4a_Mesh->SetRelativeLocation(FVector(250.000000, 116.000000, -107.000000));
+	Hardpoint4a_Mesh->SetRelativeRotation(FRotator(0.000000, 90.000000, 0.000000));
 
 	Hardpoint4b_Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Hardpoint4b_Mesh"));
 	Hardpoint4b_Mesh->SetStaticMesh(SM_HARDPOINT4B_MESH.Object);
@@ -113,64 +124,67 @@ ASpaceShipPawn::ASpaceShipPawn()
 
 	ArrowGuid_4 = CreateDefaultSubobject<UArrowComponent>(TEXT("ArrowGuid_4"));
 	ArrowGuid_4->SetupAttachment(Hardpoint4b_Mesh);
-	ArrowGuid_4->SetRelativeLocation(FVector(0.000000,-58.000214,2.000038));
-	ArrowGuid_4->SetRelativeRotation(FRotator(0.000000,-89.999985,0.000000));
+	ArrowGuid_4->SetRelativeLocation(FVector(0.000000, -58.000214, 2.000038));
+	ArrowGuid_4->SetRelativeRotation(FRotator(0.000000, -89.999985, 0.000000));
 	ArrowGuid_4->SetRelativeScale3D(FVector(1.000000, 1.000000, 1.000000));
+	ArrowGuid_4->SetCollisionProfileName(FName("ArrowProfile"));
 
 	Hardpoint5_Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Hardpoint5_Mesh"));
 	Hardpoint5_Mesh->SetStaticMesh(SM_HARDPOINT5_MESH.Object);
 	Hardpoint5_Mesh->SetupAttachment(SpaceShip_Mesh);
-	Hardpoint5_Mesh->SetRelativeLocation(FVector(-647.000000,470.000000,-90.000000));
-	Hardpoint5_Mesh->SetRelativeRotation(FRotator(0.000000,90.000000,-0.000183));
+	Hardpoint5_Mesh->SetRelativeLocation(FVector(-647.000000, 470.000000, -90.000000));
+	Hardpoint5_Mesh->SetRelativeRotation(FRotator(0.000000, 90.000000, -0.000183));
 
 	ArrowGuid_5 = CreateDefaultSubobject<UArrowComponent>(TEXT("ArrowGuid_5"));
 	ArrowGuid_5->SetupAttachment(Hardpoint5_Mesh);
-	ArrowGuid_5->SetRelativeLocation(FVector(0.000183,-300.999298,0.242222));
+	ArrowGuid_5->SetRelativeLocation(FVector(0.000183, -300.999298, 0.242222));
 	ArrowGuid_5->SetRelativeRotation(FRotator(0.000000, -89.999992, 0.000000));
 	ArrowGuid_5->SetRelativeScale3D(FVector(1.000000, 1.000000, 1.000000));
+	ArrowGuid_5->SetCollisionProfileName(FName("ArrowProfile"));
 
 	Hardpoint6_Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Hardpoint6_Mesh"));
 	Hardpoint6_Mesh->SetStaticMesh(SM_HARDPOINT6_MESH.Object);
 	Hardpoint6_Mesh->SetupAttachment(SpaceShip_Mesh);
-	Hardpoint6_Mesh->SetRelativeLocation(FVector(-647.002625,-470.000000,-90.000000));
-	Hardpoint6_Mesh->SetRelativeRotation(FRotator(0.000000,90.000000,-0.000183));
+	Hardpoint6_Mesh->SetRelativeLocation(FVector(-647.002625, -470.000000, -90.000000));
+	Hardpoint6_Mesh->SetRelativeRotation(FRotator(0.000000, 90.000000, -0.000183));
 	Hardpoint6_Mesh->SetRelativeScale3D(FVector(-1.000000, 1.000000, 1.000000));
 
 	ArrowGuid_6 = CreateDefaultSubobject<UArrowComponent>(TEXT("ArrowGuid_6"));
 	ArrowGuid_6->SetupAttachment(Hardpoint6_Mesh);
-	ArrowGuid_6->SetRelativeLocation(FVector(0.000122,-300.999878,0.212144));
-	ArrowGuid_6->SetRelativeRotation(FRotator(0.000000,90.000000,0.000000));
+	ArrowGuid_6->SetRelativeLocation(FVector(0.000122, -300.999878, 0.212144));
+	ArrowGuid_6->SetRelativeRotation(FRotator(0.000000, 90.000000, 0.000000));
 	ArrowGuid_6->SetRelativeScale3D(FVector(-1.000000, 1.000000, 1.000000));
+	ArrowGuid_6->SetCollisionProfileName(FName("ArrowProfile"));
 
 	Hardpoint7_Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Hardpoint7_Mesh"));
 	Hardpoint7_Mesh->SetStaticMesh(SM_HARDPOINT7_MESH.Object);
 	Hardpoint7_Mesh->SetupAttachment(SpaceShip_Mesh);
-	Hardpoint7_Mesh->SetRelativeLocation(FVector(-1065.996460,760.194092,16.261547));
-	Hardpoint7_Mesh->SetRelativeRotation(FRotator(25.403126,-86.329445,6.622577));
+	Hardpoint7_Mesh->SetRelativeLocation(FVector(-1065.996460, 760.194092, 16.261547));
+	Hardpoint7_Mesh->SetRelativeRotation(FRotator(25.403126, -86.329445, 6.622577));
 
 	Missile1_Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Missile1_Mesh"));
 	Missile1_Mesh->SetStaticMesh(SM_MISSILE1_MESH.Object);
 	Missile1_Mesh->SetupAttachment(Hardpoint7_Mesh);
-	Missile1_Mesh->SetRelativeLocation(FVector(-0.011426,17.765997,9.942518));
-	Missile1_Mesh->SetRelativeRotation(FRotator(43.199879,0.000000,0.000000));
+	Missile1_Mesh->SetRelativeLocation(FVector(-0.011426, 17.765997, 9.942518));
+	Missile1_Mesh->SetRelativeRotation(FRotator(43.199879, 0.000000, 0.000000));
 
 	Hardpoint8_Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Hardpoint8_Mesh"));
 	Hardpoint8_Mesh->SetStaticMesh(SM_HARDPOINT8_MESH.Object);
 	Hardpoint8_Mesh->SetupAttachment(SpaceShip_Mesh);
-	Hardpoint8_Mesh->SetRelativeLocation(FVector(-1065.937622,-760.432739,16.771074));
-	Hardpoint8_Mesh->SetRelativeRotation(FRotator(-25.402170,-86.328018,3.165193));
+	Hardpoint8_Mesh->SetRelativeLocation(FVector(-1065.937622, -760.432739, 16.771074));
+	Hardpoint8_Mesh->SetRelativeRotation(FRotator(-25.402170, -86.328018, 3.165193));
 
 	Missile2_Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Missile2_Mesh"));
 	Missile2_Mesh->SetStaticMesh(SM_MISSILE2_MESH.Object);
 	Missile2_Mesh->SetupAttachment(Hardpoint8_Mesh);
-	Missile2_Mesh->SetRelativeLocation(FVector(0.364495,14.212234,9.278972));
-	Missile2_Mesh->SetRelativeRotation(FRotator(43.199879,0.000000,0.000000));
+	Missile2_Mesh->SetRelativeLocation(FVector(0.364495, 14.212234, 9.278972));
+	Missile2_Mesh->SetRelativeRotation(FRotator(43.199879, 0.000000, 0.000000));
 
 	Shield_Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Shield_Mesh"));
 	Shield_Mesh->SetStaticMesh(SM_SHIELD_MESH.Object);
 	Shield_Mesh->SetupAttachment(SpaceShip_Mesh);
 	Shield_Mesh->SetRelativeLocation(FVector(0.00, 0.00, 0.00));
-	Shield_Mesh->SetRelativeRotation(FRotator(0.000000,90.000000,0.000000));
+	Shield_Mesh->SetRelativeRotation(FRotator(0.000000, 90.000000, 0.000000));
 	Shield_Mesh->SetVisibility(false);
 
 	// Create a spring arm component
@@ -181,7 +195,7 @@ ASpaceShipPawn::ASpaceShipPawn()
 	SpringArm->bEnableCameraLag = false; // Do not allow camera to lag
 	SpringArm->CameraLagSpeed = 15.f;
 	SpringArm->SetRelativeRotation(FRotator(0.0, 0.0, 0.0));
-	SpringArm->TargetOffset = FVector(-1240.000000,0.000000,730.000000);
+	SpringArm->TargetOffset = FVector(-1240.000000, 0.000000, 730.000000);
 	SpringArm->bUsePawnControlRotation = true;
 	SpringArm->bInheritPitch = false;
 	SpringArm->bInheritRoll = false;
@@ -198,15 +212,20 @@ ASpaceShipPawn::ASpaceShipPawn()
 	MaxSpeed = 4000.f;
 	MinSpeed = 500.f;
 	CurrentForwardSpeed = 500.f;
+	AmountLife = 100.0f;
 }
 
-void ASpaceShipPawn::ShowShield(){
+void ASpaceShipPawn::ShowShield()
+{
 	UE_LOG(LogTemp, Warning, TEXT("ShowShield()"));
-	if(!IsShieldVisible){
-		IsShieldVisible=true;
+	if (!IsShieldVisible)
+	{
+		IsShieldVisible = true;
 		Shield_Mesh->SetVisibility(IsShieldVisible);
-	}else{
-		IsShieldVisible=false;
+	}
+	else
+	{
+		IsShieldVisible = false;
 		Shield_Mesh->SetVisibility(IsShieldVisible);
 	}
 }
@@ -235,9 +254,16 @@ void ASpaceShipPawn::NotifyHit(class UPrimitiveComponent *MyComp, class AActor *
 {
 	Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
 
+	if (bIsDead)
+		return;
+
 	FRotator CurrentRotation = GetActorRotation();
 
 	SetActorRotation(FQuat::Slerp(CurrentRotation.Quaternion(), HitNormal.ToOrientationQuat(), 0.025f));
+
+	UE_LOG(LogTemp, Warning, TEXT("%s"), *Other->GetClass()->GetName());
+	UE_LOG(LogTemp, Warning, TEXT("%s"), *OtherComp->GetClass()->GetName());
+	UE_LOG(LogTemp, Warning, TEXT("%s"), *MyComp->GetClass()->GetName());
 
 	auto W = GetWorld();
 	if (W)
@@ -245,6 +271,27 @@ void ASpaceShipPawn::NotifyHit(class UPrimitiveComponent *MyComp, class AActor *
 		UGameplayStatics::SpawnEmitterAtLocation(W, CollisionExplodeParticle, HitLocation, Hit.Normal.Rotation());
 	}
 
+	if (Other->GetClass() == ATunnelUnit::StaticClass())
+	{
+		AmountLife -= 5;
+
+		if (AmountLife >= 0.0)
+			OnPlayerDecrementLife.Broadcast(AmountLife);
+
+		if (AmountLife < 0.0f)
+		{
+			bIsDead = true;
+			AmountLife = 0.0f;
+			ExplodeShip();
+			OnPlayerDiedNow.Broadcast();
+			OnPlayerDecrementLife.Broadcast(AmountLife);
+		}
+	}
+}
+
+void ASpaceShipPawn::BeginPlay()
+{
+	Super::BeginPlay();
 }
 
 // Called to bind functionality to input
@@ -263,7 +310,7 @@ void ASpaceShipPawn::SetupPlayerInputComponent(UInputComponent *PlayerInputCompo
 	PlayerInputComponent->BindAction("Fire04", IE_Pressed, this, &ASpaceShipPawn::Fire04);
 	PlayerInputComponent->BindAction("Fire05", IE_Pressed, this, &ASpaceShipPawn::Fire05);
 	PlayerInputComponent->BindAction("Fire06", IE_Pressed, this, &ASpaceShipPawn::Fire06);
-	PlayerInputComponent->BindAction("ShowShield", IE_Pressed, this, &ASpaceShipPawn::ShowShield);	
+	PlayerInputComponent->BindAction("ShowShield", IE_Pressed, this, &ASpaceShipPawn::ShowShield);
 }
 
 void ASpaceShipPawn::ThrustInput(float Val)
@@ -311,22 +358,18 @@ void ASpaceShipPawn::MoveRightInput(float Val)
 
 void ASpaceShipPawn::FireSelection(int FireType, FVector Loc, FRotator Rot)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Fire %d"), FireType);
-
 	FActorSpawnParameters SpawnInfo;
 
 	SpawnInfo.Owner = this;
 	SpawnInfo.Instigator = GetInstigator();
 	SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-	UE_LOG(LogTemp, Warning, TEXT("Location: [%s]  - Rotation: [%s]"), *Loc.ToString(), *Rot.ToString());
 	auto W = GetWorld();
 	if (W != nullptr)
 	{
 		auto projectile = GetWorld()->SpawnActor<ASpaceShipProjectile>(Loc, Rot, SpawnInfo);
-		if(projectile)
+		if (projectile)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("VALIDO  ASpaceShipProjectile"));
 			projectile->ExecuteFire(FireType);
 		}
 	}
@@ -400,4 +443,40 @@ void ASpaceShipPawn::Fire05()
 
 void ASpaceShipPawn::Fire06()
 {
+}
+
+void ASpaceShipPawn::HideShipMesh()
+{
+	SpaceShip_Mesh->SetVisibility(false, true);
+	auto GI = Cast<UBattleOfDistantHorizGameInstance>(GetGameInstance());
+	if (GI)
+	{
+		GI->ReloadGame();
+	}
+
+	Destroy();
+}
+
+void ASpaceShipPawn::ExplodeShip()
+{
+	auto W = GetWorld();
+	if (W)
+	{
+		auto PC = W->GetFirstPlayerController();
+		if (PC)
+		{
+			this->DisableInput(PC);
+		}
+
+		for (size_t i = 0; i < 20; i++)
+		{
+			FVector Origin = SpaceShip_Mesh->Bounds.Origin;
+			FVector BoxExtent = SpaceShip_Mesh->Bounds.BoxExtent;
+			FVector RandomPoint = UKismetMathLibrary::RandomPointInBoundingBox(Origin, BoxExtent);
+
+			UGameplayStatics::SpawnEmitterAtLocation(W, CollisionExplodeParticle, RandomPoint);
+		}
+
+		HideShipMesh();
+	}
 }

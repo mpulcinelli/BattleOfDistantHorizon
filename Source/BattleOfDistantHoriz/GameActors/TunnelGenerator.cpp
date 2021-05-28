@@ -33,8 +33,7 @@ void ATunnelGenerator::CreateUnit()
 	if (!LastTunnelCreated)
 	{
 		LastTunnelCreated = GetWorld()->SpawnActor<ATunnelUnit>(LocationToSpawn, RotationToSpawn, SpawnInfo);
-		UE_LOG(LogTemp, Warning, TEXT("[PRIMEIRA VEZ] POSICAO PARA O PROXIMO BLOCO %f"), LocationToSpawn.X);
-
+		UE_LOG(LogTemp, Warning, TEXT("[PRIMEIRA VEZ] POSICAO PARA O PRIMEIRO BLOCO %f"), LocationToSpawn.X);
 	}
 	else
 	{

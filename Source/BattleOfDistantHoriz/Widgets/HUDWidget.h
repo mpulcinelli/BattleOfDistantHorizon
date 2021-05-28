@@ -13,8 +13,20 @@ UCLASS()
 class BATTLEOFDISTANTHORIZ_API UHUDWidget : public UUserWidget
 {
 	GENERATED_BODY()
+
+protected:
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	class UImage *ImgCrossHair = nullptr;
 	
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	class UTextBlock *TxtLife = nullptr;
 	
-	
-	
+
+public:
+	virtual void NativeTick(const FGeometry &MyGeometry, float InDeltaTime) override;
+	virtual bool Initialize() override;
+
+private:
+	UFUNCTION()
+	void UpdateValorVida(float valor);
 };

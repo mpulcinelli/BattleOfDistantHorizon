@@ -99,3 +99,17 @@ void UUserWidgetHelper::SetPlayerHudWidget(EDisplayWidget DisplayOption)
     else
         ShowPlayerHud();
 }
+
+UUserWidget *UUserWidgetHelper::GetPlayerHudWidget()
+{
+    TArray<UUserWidget *> FoundWidgets;
+
+    UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(), FoundWidgets, UHUDWidget::StaticClass());
+
+    for (auto &&item : FoundWidgets)
+    {
+        return item;
+    }
+
+    return nullptr;
+}

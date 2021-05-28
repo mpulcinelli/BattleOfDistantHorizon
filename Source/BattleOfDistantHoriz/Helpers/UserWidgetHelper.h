@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+#include "Blueprint/UserWidget.h"
 #include "UserWidgetHelper.generated.h"
 
 
@@ -30,6 +31,9 @@ public:
 
 	UFUNCTION()
 	void SetPlayerHudWidget(EDisplayWidget DisplayOption);
+
+	UFUNCTION()
+	UUserWidget* GetPlayerHudWidget();
 
 private:
 
