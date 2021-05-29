@@ -172,18 +172,23 @@ void ATunnelUnit::ShuffleLight()
 	{
 	case 1:
 		PoitLight01->SetVisibility(FMath::RandBool());
+		PoitLight01->SetLightColor(GetRandColor());
 		break;
 	case 2:
 		PoitLight02->SetVisibility(FMath::RandBool());
+		PoitLight02->SetLightColor(GetRandColor());
 		break;
 	case 3:
 		PoitLight03->SetVisibility(FMath::RandBool());
+		PoitLight03->SetLightColor(GetRandColor());
 		break;
 	case 4:
 		PoitLight04->SetVisibility(FMath::RandBool());
+		PoitLight04->SetLightColor(GetRandColor());
 		break;
 	case 5:
 		PoitLight05->SetVisibility(FMath::RandBool());
+		PoitLight05->SetLightColor(GetRandColor());
 		break;
 
 	default:

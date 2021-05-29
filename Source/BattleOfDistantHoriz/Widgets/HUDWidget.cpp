@@ -7,6 +7,7 @@
 #include "Components/Image.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/TextBlock.h"
+#include "Components/ProgressBar.h"
 
 void UHUDWidget::NativeTick(const FGeometry &MyGeometry, float InDeltaTime)
 {
@@ -34,14 +35,21 @@ void UHUDWidget::NativeTick(const FGeometry &MyGeometry, float InDeltaTime)
 bool UHUDWidget::Initialize()
 {
     Super::Initialize();
+
     auto PC = GetWorld()->GetFirstPlayerController();
-    auto PN = Cast<ASpaceShipPawn>(PC->GetPawn());
-    PN->OnPlayerDecrementLife.AddDynamic(this, &UHUDWidget::UpdateValorVida);
+    if (PC)
+    {
+        auto PN = Cast<ASpaceShipPawn>(PC->GetPawn());
+        if(PN)
+            PN->OnPlayerDecrementLife.AddDynamic(this, &UHUDWidget::UpdateValorVida);
+    }
 
     return true;
 }
 
 void UHUDWidget::UpdateValorVida(float valor)
 {
-    TxtLife->SetText(FText::FromString(FString::SanitizeFloat(valor)));
+    //TxtLife->SetText(FText::FromString(FString::SanitizeFloat(valor)));
+    float percent = valor/100.0f;
+    PBarLife->SetPercent(percent);
 }

@@ -17,6 +17,7 @@
 #include "BattleOfDistantHoriz/Helpers/UserWidgetHelper.h"
 #include "BattleOfDistantHoriz/GameActors/TunnelUnit.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Components/PointLightComponent.h"
 
 // Sets default values
 ASpaceShipPawn::ASpaceShipPawn()
@@ -54,6 +55,16 @@ ASpaceShipPawn::ASpaceShipPawn()
 	SpaceShip_Mesh->SetNotifyRigidBodyCollision(true);
 
 	RootComponent = SpaceShip_Mesh;
+
+	PoitLightTop = CreateDefaultSubobject<UPointLightComponent>(TEXT("PoitLightTop"));
+	PoitLightTop->SetIntensity(100000.00);
+	const FColor LC = FColor(205, 179, 117, 255);
+	PoitLightTop->SetLightColor(FLinearColor::FromSRGBColor(LC));
+	PoitLightTop->SetAttenuationRadius(16384.00);
+	PoitLightTop->SetSourceRadius(17059.00);
+	PoitLightTop->SetSourceLength(50);
+	PoitLightTop->SetRelativeLocation(FVector(-894.000000,0.000000,725.000000));
+	PoitLightTop->SetupAttachment(SpaceShip_Mesh);
 
 	Hardpoint1_Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Hardpoint1_Mesh"));
 	Hardpoint1_Mesh->SetStaticMesh(SM_HARDPOINT1_MESH.Object);
@@ -273,19 +284,19 @@ void ASpaceShipPawn::NotifyHit(class UPrimitiveComponent *MyComp, class AActor *
 
 	if (Other->GetClass() == ATunnelUnit::StaticClass())
 	{
-		AmountLife -= 5;
+		AmountLife -= 1;
+	}
 
-		if (AmountLife >= 0.0)
-			OnPlayerDecrementLife.Broadcast(AmountLife);
+	if (AmountLife >= 0.0)
+		OnPlayerDecrementLife.Broadcast(AmountLife);
 
-		if (AmountLife < 0.0f)
-		{
-			bIsDead = true;
-			AmountLife = 0.0f;
-			ExplodeShip();
-			OnPlayerDiedNow.Broadcast();
-			OnPlayerDecrementLife.Broadcast(AmountLife);
-		}
+	if (AmountLife < 0.0f)
+	{
+		bIsDead = true;
+		AmountLife = 0.0f;
+		ExplodeShip();
+		OnPlayerDiedNow.Broadcast();
+		OnPlayerDecrementLife.Broadcast(AmountLife);
 	}
 }
 

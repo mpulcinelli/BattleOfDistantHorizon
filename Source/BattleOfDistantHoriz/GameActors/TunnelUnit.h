@@ -63,4 +63,17 @@ private:
 	void EndTriggerBeginOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* Other, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	TArray<AActor*> ListOfCreatedActors;
 	void ShuffleLight();
+
+	FORCEINLINE FLinearColor GetRandColor() const { 
+		switch(FMath::RandRange(0, 2)){
+			case 0:
+				return FLinearColor::Red;
+			case 1:
+				return FLinearColor::Green;
+			case 2:
+				return FLinearColor::Blue;
+			default:
+				return FLinearColor::White;
+		}
+	}
 };

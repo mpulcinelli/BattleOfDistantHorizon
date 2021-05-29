@@ -19,7 +19,8 @@ protected:
 	class UImage *ImgCrossHair = nullptr;
 	
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-	class UTextBlock *TxtLife = nullptr;
+	class UProgressBar *PBarLife = nullptr;
+
 	
 
 public:
