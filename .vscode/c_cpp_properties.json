@@ -5,12 +5,7 @@
             "intelliSenseMode": "clang-x64",
             "compileCommands": "/home/mp/Develop/personal/games/BattleOfDistantHoriz/.vscode/compileCommands_BattleOfDistantHoriz.json",
             "cStandard": "gnu17",
-            "cppStandard": "gnu++14",
-			"includePath": [
-				"/opt/UnrealEngine/Engine/Source/**",
-				"/home/mp/Develop/personal/games/BattleOfDistantHoriz/Source/**",
-                "/home/mp/Develop/personal/games/BattleOfDistantHoriz/Source/BattleOfDistantHoriz/**"
-			]
+            "cppStandard": "gnu++14"
         },
         {
             "name": "Linux",

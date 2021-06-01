@@ -13,7 +13,7 @@ class BATTLEOFDISTANTHORIZ_API APickUpBase : public AActor
 	
 public:	
 	// Sets default values for this actor's properties
-	APickUpBase();
+	APickUpBase(const FObjectInitializer& ObjectInitializer);
 	
 	class UStaticMeshComponent *PickUpMesh;
 

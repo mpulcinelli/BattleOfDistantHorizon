@@ -21,6 +21,8 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	class UProgressBar *PBarLife = nullptr;
 
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	class UProgressBar *PBarFuel = nullptr;
 	
 
 public:
@@ -30,4 +32,8 @@ public:
 private:
 	UFUNCTION()
 	void UpdateValorVida(float valor);
+
+	UFUNCTION()
+	void UpdateValorCombustivel(float valor);
+
 };

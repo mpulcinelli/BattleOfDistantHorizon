@@ -9,6 +9,7 @@
 #include "BattleOfDistantHoriz/Characters/SpaceShipPawn.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "BattleOfDistantHoriz/Pickups/StarPickUp.h"
+#include "BattleOfDistantHoriz/Pickups/FuelPickUp.h"
 #include "Components/PointLightComponent.h"
 #include "Components/ArrowComponent.h"
 
@@ -22,6 +23,7 @@ ATunnelUnit::ATunnelUnit()
 	TunnelUnitMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TunnelUnitMesh"));
 	EndTrigger = CreateDefaultSubobject<UBoxComponent>(TEXT("EndTrigger"));
 	AreaToSpawn = CreateDefaultSubobject<UBoxComponent>(TEXT("AreaToSpawn"));
+	AreaToSpawnFuelPickUp = CreateDefaultSubobject<UBoxComponent>(TEXT("AreaToSpawnFuelPickUp"));
 	PoitLight01 = CreateDefaultSubobject<UPointLightComponent>(TEXT("PoitLight01"));
 	PoitLight02 = CreateDefaultSubobject<UPointLightComponent>(TEXT("PoitLight02"));
 	PoitLight03 = CreateDefaultSubobject<UPointLightComponent>(TEXT("PoitLight03"));
@@ -37,6 +39,7 @@ ATunnelUnit::ATunnelUnit()
 	TunnelUnitMesh->SetupAttachment(RootComp);
 	EndTrigger->SetupAttachment(RootComp);
 	AreaToSpawn->SetupAttachment(RootComp);
+	AreaToSpawnFuelPickUp->SetupAttachment(RootComp);
 
 	TunnelUnitMesh->SetCollisionProfileName(FName("BlockAll"));
 
@@ -104,6 +107,11 @@ ATunnelUnit::ATunnelUnit()
 	AreaToSpawn->SetGenerateOverlapEvents(true);
 	AreaToSpawn->SetCollisionProfileName(FName("BoxSpawnProfile"));
 
+	AreaToSpawnFuelPickUp->SetRelativeLocation(FVector(0.000000, 0.000000, -2247.000000));
+	AreaToSpawnFuelPickUp->SetRelativeScale3D(FVector(61.250000, 61.250000, 1.000000));
+	AreaToSpawnFuelPickUp->SetGenerateOverlapEvents(false);
+	AreaToSpawnFuelPickUp->SetCollisionProfileName(FName("BoxSpawnFuelProfile"));
+
 	ArrowPositionNextBlock->SetRelativeLocation(FVector(2400.000000, 0.000000, -2400.000000));
 	ArrowPositionNextBlock->SetRelativeScale3D(FVector(1.0f, 1.0f, 1.0f));
 
@@ -137,7 +145,18 @@ void ATunnelUnit::BeginPlay()
 		start->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *RandPoint.ToString());
+	FVector RandPointToFuel;
+
+	GetRandomPointIn3DBoxSpace(RandPointToFuel, AreaToSpawnFuelPickUp);
+
+	auto fuel = GetWorld()->SpawnActor<AFuelPickUp>(RandPointToFuel, RotationToSpawn, SpawnInfo);
+
+	if (fuel != nullptr)
+	{
+		ListOfCreatedActors.Add(fuel);
+
+		fuel->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
+	}
 }
 
 void ATunnelUnit::BeginDestroy()

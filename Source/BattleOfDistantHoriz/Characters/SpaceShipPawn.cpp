@@ -224,6 +224,7 @@ ASpaceShipPawn::ASpaceShipPawn()
 	MinSpeed = 500.f;
 	CurrentForwardSpeed = 500.f;
 	AmountLife = 100.0f;
+	AmountFuel = 100.0f;
 }
 
 void ASpaceShipPawn::ShowShield()
@@ -303,6 +304,7 @@ void ASpaceShipPawn::NotifyHit(class UPrimitiveComponent *MyComp, class AActor *
 void ASpaceShipPawn::BeginPlay()
 {
 	Super::BeginPlay();
+	GetWorld()->GetTimerManager().SetTimer(DecrementFuelTimerHandle, this, &ASpaceShipPawn::DecrementFuel, 2.0f, true, 2.0f);
 }
 
 // Called to bind functionality to input
@@ -466,6 +468,29 @@ void ASpaceShipPawn::HideShipMesh()
 	}
 
 	Destroy();
+}
+
+void ASpaceShipPawn::DecrementFuel() 
+{
+	if (bIsDead) return;
+
+	float FuelExpense = (CurrentForwardSpeed / MaxSpeed) * 10.0f;
+
+	AmountFuel -= FuelExpense;
+
+	if (AmountFuel >= 0.0)
+		OnPlayerDecrementFuel.Broadcast(AmountFuel);
+
+	if(AmountFuel<0.0f){
+		bIsDead = true;
+		AmountFuel = 0.0f;
+		ExplodeShip();
+		OnPlayerDiedNow.Broadcast();
+		OnPlayerDecrementFuel.Broadcast(AmountFuel);
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("GASTO DE COMBUSTIVEL: %f"), FuelExpense);
+	UE_LOG(LogTemp, Warning, TEXT("QUANTIDADE COMBUSTIVEL: %f"), AmountFuel);
 }
 
 void ASpaceShipPawn::ExplodeShip()

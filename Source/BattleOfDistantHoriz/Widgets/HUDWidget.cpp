@@ -40,8 +40,11 @@ bool UHUDWidget::Initialize()
     if (PC)
     {
         auto PN = Cast<ASpaceShipPawn>(PC->GetPawn());
-        if(PN)
+        if (PN)
+        {
             PN->OnPlayerDecrementLife.AddDynamic(this, &UHUDWidget::UpdateValorVida);
+            PN->OnPlayerDecrementFuel.AddDynamic(this, &UHUDWidget::UpdateValorCombustivel);
+        }
     }
 
     return true;
@@ -50,6 +53,13 @@ bool UHUDWidget::Initialize()
 void UHUDWidget::UpdateValorVida(float valor)
 {
     //TxtLife->SetText(FText::FromString(FString::SanitizeFloat(valor)));
-    float percent = valor/100.0f;
+    float percent = valor / 100.0f;
     PBarLife->SetPercent(percent);
+}
+
+void UHUDWidget::UpdateValorCombustivel(float valor)
+{
+    float percent = valor / 100.0f;
+    PBarFuel->SetPercent(percent);
+    UE_LOG(LogTemp, Warning, TEXT("COMBUSTIVEL TELA: %f"), percent);
 }

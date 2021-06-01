@@ -14,11 +14,17 @@ class BATTLEOFDISTANTHORIZ_API ASpaceShipPawn : public APawn
 public:
 
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPlayerDecrementLife, float, ponto);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPlayerDecrementFuel, float, fuel);
+
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPlayerDiedNow);
 
 
 	UPROPERTY(BlueprintAssignable)
 	FPlayerDecrementLife OnPlayerDecrementLife;
+
+	UPROPERTY(BlueprintAssignable)
+	FPlayerDecrementFuel OnPlayerDecrementFuel;
+
 
 	UPROPERTY(BlueprintAssignable)
 	FPlayerDiedNow OnPlayerDiedNow;
@@ -166,7 +172,7 @@ protected:
 
 private:
 
-
+	FTimerHandle DecrementFuelTimerHandle;
 
 	/** How quickly forward speed changes */
 	UPROPERTY(Category=Plane, EditAnywhere)
@@ -175,6 +181,9 @@ private:
 	/** How quickly forward speed changes */
 	UPROPERTY(Category=Plane, EditAnywhere)
 	float AmountLife;
+
+	UPROPERTY(Category=Plane, EditAnywhere)
+	float AmountFuel;
 
 
 	/** How quickly pawn can steer */
@@ -209,6 +218,8 @@ private:
 
 	class UParticleSystem* CollisionExplodeParticle;
 
+	UFUNCTION()
+	void DecrementFuel();
 
 public:	
 	
