@@ -124,7 +124,7 @@ ATunnelUnit::ATunnelUnit()
 void ATunnelUnit::BeginPlay()
 {
 	Super::BeginPlay();
-	ShuffleLight();
+	ShuffleLight(FMath::RandRange(0, 1));
 
 	EndTrigger->OnComponentBeginOverlap.AddDynamic(this, &ATunnelUnit::EndTriggerBeginOverlap);
 	FVector RandPoint;
@@ -142,7 +142,7 @@ void ATunnelUnit::BeginPlay()
 	{
 		ListOfCreatedActors.Add(start);
 
-		start->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
+		start->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform);
 	}
 
 	FVector RandPointToFuel;
@@ -155,7 +155,7 @@ void ATunnelUnit::BeginPlay()
 	{
 		ListOfCreatedActors.Add(fuel);
 
-		fuel->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
+		fuel->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform);
 	}
 }
 
@@ -171,48 +171,69 @@ void ATunnelUnit::Tick(float DeltaTime)
 
 void ATunnelUnit::EndTriggerBeginOverlap(class UPrimitiveComponent *OverlappedComp, class AActor *Other, class UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
 {
+	if(bIsPendingKill)return;
+
 	auto isPlayer = Cast<ASpaceShipPawn>(Other);
 
 	if (isPlayer != nullptr)
 	{
-		// Destroi o túnel.
-		SetLifeSpan(0.5);
 		for (auto &itm : ListOfCreatedActors)
 		{
-			// Destroi os objetos criados pelo Túnel.
 			itm->SetLifeSpan(0.5);
 		}
+
+		// Destroi o túnel.
+		SetLifeSpan(0.5);
+		bIsPendingKill=true;
 	}
 }
 
-void ATunnelUnit::ShuffleLight()
+void ATunnelUnit::ShuffleLight(int OptShuffle)
 {
-	int32 opt = FMath::RandRange(1, 5);
-	switch (opt)
+	switch (OptShuffle)
 	{
-	case 1:
+	case 0:
 		PoitLight01->SetVisibility(FMath::RandBool());
 		PoitLight01->SetLightColor(GetRandColor());
-		break;
-	case 2:
 		PoitLight02->SetVisibility(FMath::RandBool());
 		PoitLight02->SetLightColor(GetRandColor());
-		break;
-	case 3:
 		PoitLight03->SetVisibility(FMath::RandBool());
 		PoitLight03->SetLightColor(GetRandColor());
-		break;
-	case 4:
 		PoitLight04->SetVisibility(FMath::RandBool());
 		PoitLight04->SetLightColor(GetRandColor());
-		break;
-	case 5:
 		PoitLight05->SetVisibility(FMath::RandBool());
 		PoitLight05->SetLightColor(GetRandColor());
 		break;
-
 	default:
 		break;
+	case 1:
+		int32 opt = FMath::RandRange(1, 5);
+		switch (opt)
+		{
+		case 1:
+			PoitLight01->SetVisibility(FMath::RandBool());
+			PoitLight01->SetLightColor(GetRandColor());
+			break;
+		case 2:
+			PoitLight02->SetVisibility(FMath::RandBool());
+			PoitLight02->SetLightColor(GetRandColor());
+			break;
+		case 3:
+			PoitLight03->SetVisibility(FMath::RandBool());
+			PoitLight03->SetLightColor(GetRandColor());
+			break;
+		case 4:
+			PoitLight04->SetVisibility(FMath::RandBool());
+			PoitLight04->SetLightColor(GetRandColor());
+			break;
+		case 5:
+			PoitLight05->SetVisibility(FMath::RandBool());
+			PoitLight05->SetLightColor(GetRandColor());
+			break;
+
+		default:
+			break;
+		}
 	}
 }
 

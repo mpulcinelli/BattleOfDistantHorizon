@@ -238,8 +238,8 @@
     <Include Path="/opt/UnrealEngine/Engine/Source/Editor/Kismet/Public" />
     <Include Path="/opt/UnrealEngine/Engine/Intermediate/Build/Linux/B4D820EA/UE4Editor/Inc/ClothingSystemRuntimeInterface" />
     <Include Path="/opt/UnrealEngine/Engine/Source/Runtime/ClothingSystemRuntimeInterface/Public" />
-    <Include Path="/home/mp/Develop/personal/games/BattleOfDistantHoriz/Intermediate/Build/Linux/B4D820EA/UE4Editor/Inc/BattleOfDistantHoriz" />
-    <Include Path="/home/mp/Develop/personal/games/BattleOfDistantHoriz/Source" />
+    <Include Path="/home/mp/Documents/UEProjects/BattleOfDistantHorizon/Intermediate/Build/Linux/B4D820EA/UE4Editor/Inc/BattleOfDistantHoriz" />
+    <Include Path="/home/mp/Documents/UEProjects/BattleOfDistantHorizon/Source" />
     <Include Path="/opt/UnrealEngine/Engine/Source/ThirdParty/PhysX3/PxShared/include" />
     <Include Path="/opt/UnrealEngine/Engine/Source/ThirdParty/PhysX3/PxShared/include/cudamanager" />
     <Include Path="/opt/UnrealEngine/Engine/Source/ThirdParty/PhysX3/PxShared/include/filebuf" />

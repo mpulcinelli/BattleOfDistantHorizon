@@ -18,5 +18,8 @@ public:
 
 	AFuelPickUp(const FObjectInitializer& ObjectInitializer);
 	
+
+	UPROPERTY(Category = Mesh, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	class URectLightComponent *TopLigh;
 	
 };

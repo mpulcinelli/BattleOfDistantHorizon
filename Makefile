@@ -2,7 +2,7 @@
 # *DO NOT EDIT*
 
 UNREALROOTPATH = /opt/UnrealEngine
-GAMEPROJECTFILE =/home/mp/Develop/personal/games/BattleOfDistantHoriz/BattleOfDistantHoriz.uproject
+GAMEPROJECTFILE =/home/mp/Documents/UEProjects/BattleOfDistantHorizon/BattleOfDistantHoriz.uproject
 
 TARGETS = \
 	BattleOfDistantHoriz-Linux-Debug  \

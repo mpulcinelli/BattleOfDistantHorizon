@@ -17,7 +17,7 @@ void ATunnelGenerator::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GetWorld()->GetTimerManager().SetTimer(CreateUnitTimerHandle, this, &ATunnelGenerator::CreateUnit, 0.5f, true, 0);
+	GetWorld()->GetTimerManager().SetTimer(CreateUnitTimerHandle, this, &ATunnelGenerator::CreateUnit, 1.0f, true, 0);
 }
 
 void ATunnelGenerator::Tick(float DeltaTime)

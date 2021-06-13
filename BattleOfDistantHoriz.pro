@@ -10,9 +10,9 @@ CONFIG -= qt
 TARGET = UE4 
 
 unrealRootPath=/opt/UnrealEngine
-BattleOfDistantHorizRootPath=/home/mp/Develop/personal/games/BattleOfDistantHoriz
+BattleOfDistantHorizRootPath=/home/mp/Documents/UEProjects/BattleOfDistantHorizon
 
-gameProjectFile=/home/mp/Develop/personal/games/BattleOfDistantHoriz/BattleOfDistantHoriz.uproject
+gameProjectFile=/home/mp/Documents/UEProjects/BattleOfDistantHorizon/BattleOfDistantHoriz.uproject
 build=bash $$unrealRootPath/Engine/Build/BatchFiles/Linux/RunMono.sh $$unrealRootPath/Engine/Binaries/DotNET/UnrealBuildTool.exe
 
 args=$(ARGS)

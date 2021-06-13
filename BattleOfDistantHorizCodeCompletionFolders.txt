@@ -235,8 +235,8 @@
 /opt/UnrealEngine/Engine/Source/Editor/Kismet/Public
 /opt/UnrealEngine/Engine/Intermediate/Build/Linux/B4D820EA/UE4Editor/Inc/ClothingSystemRuntimeInterface
 /opt/UnrealEngine/Engine/Source/Runtime/ClothingSystemRuntimeInterface/Public
-/home/mp/Develop/personal/games/BattleOfDistantHoriz/Intermediate/Build/Linux/B4D820EA/UE4Editor/Inc/BattleOfDistantHoriz
-/home/mp/Develop/personal/games/BattleOfDistantHoriz/Source
+/home/mp/Documents/UEProjects/BattleOfDistantHorizon/Intermediate/Build/Linux/B4D820EA/UE4Editor/Inc/BattleOfDistantHoriz
+/home/mp/Documents/UEProjects/BattleOfDistantHorizon/Source
 /opt/UnrealEngine/Engine/Source/ThirdParty/PhysX3/PxShared/include
 /opt/UnrealEngine/Engine/Source/ThirdParty/PhysX3/PxShared/include/cudamanager
 /opt/UnrealEngine/Engine/Source/ThirdParty/PhysX3/PxShared/include/filebuf
